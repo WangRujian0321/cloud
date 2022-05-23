@@ -1,10 +1,12 @@
 <template>
-  <div></div>
+  <div class="musicList">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
 export default {
-  name: `discover`
+  name: "musicList"
 }
 </script>
 

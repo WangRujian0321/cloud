@@ -15,6 +15,6 @@ module.exports = {
         'plugins': '@/plugins',
       }
     },
-    lintOnSave: false
+    // lintOnSave: false
   }
 }

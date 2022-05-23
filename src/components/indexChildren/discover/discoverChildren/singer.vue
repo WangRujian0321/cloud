@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div>歌手</div>
 </template>
 
 <script>
 export default {
-  name: `discover`
+  name: "singer"
 }
 </script>
 

@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div class="musicListDetail">歌单相关</div>
 </template>
 
 <script>
 export default {
-  name: `discover`
+  name: "musicListDetail"
 }
 </script>
 

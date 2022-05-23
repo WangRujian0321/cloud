@@ -1,10 +1,10 @@
 <template>
-  <div></div>
+  <div class="video">视频</div>
 </template>
 
 <script>
 export default {
-  name: `discover`
+  name: "video"
 }
 </script>
 
