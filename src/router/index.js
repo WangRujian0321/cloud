@@ -29,7 +29,7 @@ const routes = [
                 children: [
                     { path: '/discover/recommend', component: Recommend },
                     {
-                        path: '/discover/musiclist/musiclistindex',
+                        path: '/discover/musiclist',
                         component: MusicList,
                         children: [
                             {path: '/discover/musiclist/musiclistindex', component:MusicListIndex},

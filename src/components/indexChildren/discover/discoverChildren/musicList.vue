@@ -1,5 +1,6 @@
 <template>
   <div class="musicList">
+    <p>歌单</p>
     <router-view></router-view>
   </div>
 </template>

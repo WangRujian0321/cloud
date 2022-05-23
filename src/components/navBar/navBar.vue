@@ -1,7 +1,6 @@
 <template>
   <div class="navBarContainer">
     <div class="navBar">
-      <p>{{navBarItem}}</p>
       <div
           class="barItem"
           v-for="(item, index) in navBarItem"
@@ -47,5 +46,35 @@ export default {
 </script>
 
 <style scoped>
+.navBarContainer {
+  height: 60px;
+  width: 100%;
+  position: relative;
+}
+.navBar {
+  display: flex;
+  position: fixed;
+  left: 160px;
+  top: 50px;
+  background-color: #fff;
+  z-index: 100;
+  width: 100%;
+  color: rgb(49, 49, 49);
+  align-items: center;
+  padding: 10px 0 20px 20px;
+}
+.barItem {
+  font-size: 13px;
+  margin: 0 10px;
+  text-align: center;
+}
 
+.active {
+  font-size: 16px;
+  color: black;
+  font-weight: 600;
+  padding-bottom: 5px;
+  border-bottom: 3px solid #ec4141;
+  transform: translateY(4px);
+}
 </style>
