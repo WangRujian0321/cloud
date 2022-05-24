@@ -37,6 +37,10 @@ export function request(url, params) {
     }
 }
 
+export function LoginByCellPhone(params) {
+    return request('/login', params)
+}
+
 // export function request(url, params) {
 //     const instance = axios.create({
 //         baseURL: 'http://www.baidu.com',

@@ -1,6 +1,8 @@
 <template>
   <el-container>
-    <el-header>Header</el-header>
+    <el-header>
+      <header-bar></header-bar>
+    </el-header>
     <el-container>
       <!-- 侧边栏 -->
       <el-aside width="160px">
@@ -44,8 +46,10 @@
 
 <script>
 import BottomControl from "./bottomControl/bottomControl";
+import HeaderBar from "@/components/headerBar/headerBar";
 export default {
   components: {
+    HeaderBar,
     BottomControl,
   },
   name: "Index",
