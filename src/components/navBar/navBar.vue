@@ -5,7 +5,7 @@
           class="barItem"
           v-for="(item, index) in navBarItem"
           :key="index"
-          :class="index === activeNum"
+          :class="index === activeNum ? 'active' : '' "
           @click="clickBarItem(item.path, index)">
         {{item.name}}
       </div>
@@ -51,6 +51,7 @@ export default {
   width: 100%;
   position: relative;
 }
+
 .navBar {
   display: flex;
   position: fixed;
@@ -63,6 +64,7 @@ export default {
   align-items: center;
   padding: 10px 0 20px 20px;
 }
+
 .barItem {
   font-size: 13px;
   margin: 0 10px;
