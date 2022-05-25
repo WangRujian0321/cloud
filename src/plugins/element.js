@@ -9,6 +9,8 @@ import {
     Menu,
     MenuItem,
     MenuItemGroup,
+    Popover,
+    Input,
     Submenu,
     Carousel,
     CarouselItem,
@@ -19,6 +21,8 @@ import {
     TableColumn,
 } from 'element-ui'
 
+Vue.use(Input)
+Vue.use(Popover)
 Vue.use(Container)
 Vue.use(Header)
 Vue.use(Aside)

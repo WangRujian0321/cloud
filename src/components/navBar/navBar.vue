@@ -30,16 +30,35 @@ export default {
     }
   },
   created() {
-    this.navBarItem.forEach((item, index) => {
-      if (this.$route.path.search(item.path) !== -1) {
-        this.activeNum = index;
-      }
-    })
+    this.setNavBar(this.$route.path);
+    // this.navBarItem.forEach((item, index) => {
+    //   if (this.$route.path.search(item.path) !== -1) {
+    //     this.activeNum = index;
+    //   }
+    // })
   },
   methods: {
     clickBarItem(path, index) {
       this.activeNum = index;
       this.$emit('clickBarItem', path)
+    },
+    setNavBar(path) {
+      this.navBarItem.forEach((item, index) => {
+        if(path.search(item.path) !== -1) {
+          this.activeNum = index;
+        }
+      })
+    }
+  },
+  // 监听路由变化, 改变激活的navBar选项
+  watch: {
+    $route(to, from) {
+      this.setNavBar(to.path);
+      // this.navBarItem.forEach((item, index) => {
+      //   if (to.path.search(item.path) !== -1) {
+      //     this.activeNum = index;
+      //   }
+      // })
     }
   }
 }

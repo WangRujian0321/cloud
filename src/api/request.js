@@ -41,6 +41,26 @@ export function LoginByCellPhone(params) {
     return request('/login', params)
 }
 
+export function getSuggestList(params) {
+    return request('/search/suggest', params)
+}
+// 热搜榜
+export function getHotSearch() {
+    return request('/search/hot/detail')
+}
+// 获取搜索建议
+export function getSearchSuggest(keywords) {
+    return request('/search/suggest', {keywords})
+}
+// 根据id获取歌曲详情
+export function getMusicInfos(ids) {
+    return request('/song/detail', {ids})
+}
+// 获得当前用户信息
+export function getCurrentUserInfo(timestamp) {
+    return request('/user/account', {timestamp})
+}
+
 // export function request(url, params) {
 //     const instance = axios.create({
 //         baseURL: 'http://www.baidu.com',

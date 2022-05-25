@@ -1,15 +1,164 @@
 <template>
   <div class="headerBar">
     <div class="left">
-      <img src="/public/img/logo.png" alt=""/>
+      <img src="~assets/img/logo.png" alt=""/>
     </div>
-    <div class="center"></div>
+    <div class="center">
+      <div class="buttons">
+        <i class="iconfont icon-arrow-left-bold back" @click="$router.go(-1)"></i>
+        <i class="iconfont icon-arrow-right-bold forward" @click="$router.go(1)"></i>
+      </div>
+      <div class="search">
+        <el-popover placement="bottom" width="300" v-model="isSearchPopShow" popper-class="searchPop" trigger="focus">
+          <el-input placeholder="请输入内容" prefix-icon="el-icon-search" size="mini" slot="reference" v-model="searchInput"></el-input>
+        </el-popover>
+<!--        可以制作搜索历史-->
+<!--      热搜-->
+<!--        <div class="hotSearch" v-if="!searchSuggestList.songs">-->
+<!--          <div class="hotSearchTitle">热搜榜</div>-->
+<!--        </div>-->
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import {handleMusicTime} from "@/plugins/utils";
+import {getCurrentUserInfo, getHotSearch, getMusicInfos, getSuggestList} from "@/api/request";
+
+// 节流计时器声明
+let timer;
+
 export default {
-  name: "headerBar"
+  name: "headerBar",
+  data() {
+    return {
+      userInfo: {},
+      isPopoverShow: false,
+      isSearchPopShow: false,
+      hotSearchList: [],
+      searchInput: "",
+      searchSuggestList: {},
+      isRegisteredShow: false,
+    }
+  },
+  methods: {
+    getHotSearch() {
+      return getHotSearch().then(res=>{
+        this.hotSearchList = res.data.data;
+      })
+    },
+    getSuggestList(keywords) {
+      getSuggestList({keywords}).then(res=>{
+        this.searchSuggestList = res.data.result
+      })
+    },
+    getMusicInfo(ids) {
+      return new Promise(resolve => {
+        getMusicInfos(ids).then(res=>{
+          console.log(res)
+          res.data.songs[0].dt = handleMusicTime(res.data.songs[0].dt)
+          resolve(res.data.songs[0]);
+        })
+      })
+    },
+    getCurrentUserInfo() {
+      let timestamp = Date.parse(new Date());
+      return getCurrentUserInfo({timestamp}).then(res=>{
+        if(res.data.profile !== null) {
+          this.userInfo = res.data.profile;
+          this.$store.commit("updateLoginState", true);
+          window.localStorage.setItem("userId", res.data.profile.userId);
+        }else {
+          this.$store.commit("updateLoginState", false);
+          if(window.localStorage.getItem("userId")) {
+            window.localStorage.removeItem("userId");
+          }
+        }
+      })
+    },
+    // 输入信息的回调
+    inputSearch(e) {
+      clearTimeout(timer);
+      if (e !== "") {
+        timer = setTimeout(()=>{
+          this.getSuggestList();
+        }, 500)
+      }else {
+        this.searchSuggestList = {}
+      }
+    },
+    // 输入框内按下回车的回调
+    onsubmit(e) {
+      if(e.keyCode === 13 && this.searchInput !== "") {
+        this.goSe
+      }
+    },
+    // 跳转到详情界面
+    goSearch() {
+      this.isSearchPopShow = false;
+      this.$router.push({name:"search", params:{id:this.searchInput}})
+    },
+    // 点击热搜榜回调
+    clickHotSearch(searchWord) {
+      this.searchInput = searchWord;
+      this.goSearch();
+    },
+    // 点击非单曲的内容回调
+    clickSuggestOption(id, name) {
+      this.isSearchPopShow = false;
+      this.$router.push({name, params:{id}})
+    },
+    clickSuggestSong(id) {
+      this.getMusicInfo(id).then(row=>{
+        this.isSearchPopShow = false;
+        let musicList = this.$store.state.musicList;
+        let currentIndex = this.$store.state.currentIndex;
+        let isExist = musicList.find(item=> item.id === row.id);
+        if (isExist) {
+          this.$store.commit("updateMusicId");
+        }else{
+          this.$store.commit("changePlayState", false);
+          // 将请求的歌单详情插入到歌单对应的位置并且提交至Vuex
+          musicList.splice(currentIndex + 1, 0, row);
+          this.$store.commit('updateMusicId', row.id);
+          this.$store.commit('updateMusicList', {
+            musicList,
+            musicListId: this.$store.state.musicListId,
+          })
+        }
+      })
+    },
+    // 关闭注册框
+    closeRegistered(){
+      this.isRegisteredShow = false;
+    },
+    // 跳转到个人界面
+    goToPerson() {
+      if (this.$route.path !== `/personal/${this.userInfo.userId}`) {
+        this.$router.push({
+          name: "personal",
+          params: {
+            uid: this.userInfo.userId,
+          }
+        })
+      }
+    },
+  },
+  created() {
+    Promise.all([this.getMusicInfo(), this.getCurrentUserInfo()]).then(() => {
+      if (document.cookie.search("MUSIC_U") !== -1) {
+        this.$store.commit("updateLoginState", true);
+      }
+    })
+  },
+  watch: {
+    "$store.state.isLogin"(current) {
+      if (!current && this.userInfo.nickname) {
+        this.userInfo = {};
+      }
+    }
+  }
 }
 </script>
 
