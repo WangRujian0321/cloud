@@ -48,7 +48,9 @@ export default {
           },
           this.loginForm
       );
+      console.log(params)
       LoginByCellPhone(params).then(res =>{
+        console.log(res)
         if(res.data.code === 200) {
           window.localStorage.setItem("userId", res.data.profile.userId)
           this.$emit("getUserInfo", res.data.profile)
@@ -59,11 +61,11 @@ export default {
           this.loginForm.phone = "";
           this.$store.commit("updateLoginState", true);
         } else if(res.data.code === 400) {
-          this.$message({message:'手机号错误!', type:"error"})
+          this.$message.error("手机号码错误！")
         } else if(res.data.code === 502) {
-          this.$message({message:'密码错误!', type:"error"})
+          this.$message.error("密码错误！")
         } else {
-          this.$message({message:'登陆失败，请稍后重试!', type:"error"})
+          this.$message.error("登陆失败")
         }
       })
     }

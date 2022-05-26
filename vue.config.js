@@ -13,7 +13,7 @@ module.exports = {
         'common': '@/common',
         'components': '@/components',
         'network': '@/network',
-        'view': '@/views',
+        'views': '@/views',
         'plugins': '@/plugins',
       }
     },

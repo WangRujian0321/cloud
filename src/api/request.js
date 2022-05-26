@@ -38,7 +38,7 @@ export function request(url, params) {
 }
 
 export function LoginByCellPhone(params) {
-    return request('/login', params)
+    return request('/login/cellphone', params)
 }
 
 export function getSuggestList(params) {

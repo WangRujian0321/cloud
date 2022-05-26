@@ -3,15 +3,15 @@ import VueRouter from 'vue-router'
 
 
 const Index = () => import('components/index.vue')
-const Discover = () => import('components/indexChildren/discover/discover.vue')
-const Recommend = () => import('components/indexChildren/discover/discoverChildren/recommend.vue')
-const MusicList = () => import('components/indexChildren/discover/discoverChildren/musicList.vue')
-const MusicListDetail = () => import('components/indexChildren/musicListDetail/musicListDetail.vue')
-const MusicListIndex = () => import('components/indexChildren/discover/discoverChildren/musicListChildren/musicListIndex.vue')
-const MusicListHighQuality = () => import('components/indexChildren/discover/discoverChildren/musicListChildren/musicListHighQuality.vue')
-const Ranking = () => import('components/indexChildren/discover/discoverChildren/ranking.vue')
-const Singer = () => import('components/indexChildren/discover/discoverChildren/singer.vue')
-const Video = () => import('components/indexChildren/video/video.vue')
+const Discover = () => import('views/discover/discover.vue')
+const Recommend = () => import('views/discover/discoverChildren/recommend.vue')
+const MusicList = () => import('views/discover/discoverChildren/musicList.vue')
+const MusicListDetail = () => import('views/musicListDetail/musicListDetail.vue')
+const MusicListIndex = () => import('views/discover/discoverChildren/musicListChildren/musicListIndex.vue')
+const MusicListHighQuality = () => import('views/discover/discoverChildren/musicListChildren/musicListHighQuality.vue')
+const Ranking = () => import('views/discover/discoverChildren/ranking.vue')
+const Singer = () => import('views/discover/discoverChildren/singer.vue')
+const Video = () => import('views/video/video.vue')
 
 Vue.use(VueRouter)
 
