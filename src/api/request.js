@@ -20,7 +20,7 @@ export function request(url, params) {
         return data
     }, error => {
         console.log(error);
-        if(error.response.data.msg === '需要登录') {
+        if(error.response.data.msg == '需要登录') {
             vuex.state.isLogin = false;
         } else{
             console.log(error.data.msg);

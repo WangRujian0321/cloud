@@ -2,6 +2,9 @@ import Vue from 'vue'
 
 import {
     Container,
+    Button,
+    Form,
+    FormItem,
     Header,
     Aside,
     Main,
@@ -21,6 +24,9 @@ import {
     TableColumn,
 } from 'element-ui'
 
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Button)
 Vue.use(Input)
 Vue.use(Popover)
 Vue.use(Container)

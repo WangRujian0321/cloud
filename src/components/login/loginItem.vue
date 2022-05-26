@@ -8,16 +8,16 @@
         size="mini"
     >
       <el-form-item label="手机号码" size="mini" label-width="100px" required>
-        <el-input type="text" class="loginInput" v-model="loginForm.phone"></el-input>
+        <input type="text" class="loginInput" v-model="loginForm.phone"></input>
       </el-form-item>
       <el-form-item label="密码" size="mini" label-width="100px" required>
-        <el-input type="password" class="loginInput" v-model="loginForm.password"></el-input>
+        <input type="password" class="loginInput" v-model="loginForm.password"></input>
       </el-form-item>
       <div class="loginButton">
         <el-button type="danger" @click="loginByPhoneNumber" size="mini">登录</el-button>
       </div>
       <div class="loginButton">
-        <el-button type="info" size="mini">注册</el-button>
+        <div class="regEnter" @click="isRegisteredShow = true">注册</div>
       </div>
     </el-form>
   </div>
@@ -28,7 +28,7 @@ import {LoginByCellPhone} from "@/api/request";
 import store from "@/store";
 
 export default {
-  name: "login",
+  name: "loginItem",
   store: store,
   data(){
     return {

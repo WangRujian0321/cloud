@@ -10,13 +10,83 @@
       </div>
       <div class="search">
         <el-popover placement="bottom" width="300" v-model="isSearchPopShow" popper-class="searchPop" trigger="focus">
-          <el-input placeholder="请输入内容" prefix-icon="el-icon-search" size="mini" slot="reference" v-model="searchInput"></el-input>
+          <el-input placeholder="请输入内容" @input="inputSearch"
+                    prefix-icon="el-icon-search"
+                    size="mini" slot="reference"
+                    v-model="searchInput"></el-input>
+          <!--        可以使用localStorage制作搜索历史-->
+          <!--      热搜-->
+          <div class="hotSearch" v-if="!searchSuggestList.songs">
+            <div class="hotSearchTitle">热搜榜</div>
+            <div class="hotSearchItem" v-for="(item, index) in hotSearchList" :key="index" @click="clickHotSearch(item.searchWord)">
+              <div class="hotSearchIndex" :class="index < 3 ? 'topTree' : ''">
+                {{index + 1}}
+              </div>
+              <div class="hotSearchInfo">
+                <div class="hotSearchWord" :class="index < 3 ? 'hotSearchWordTopThree' : ''">
+                  {{ item.searchWord }}
+                </div>
+                <div class="hotSearchContent">{{item.content}}</div>
+              </div>
+            </div>
+          </div>
+<!--          搜索建议-->
+          <div class="searchSuggest">
+            <div class="hotSearchTitle" v-if="searchSuggestList.songs">搜索建议</div>
+            <div class="searchSuggestItem" v-if="searchSuggestList.songs && searchSuggestList.songs.length !== 0">
+              <div class="searchSuggestItemTitle">
+                <i class="iconfont icon-yinle"></i>
+                单曲
+              </div>
+              <div class="suggestItemDetail" v-for="(item, index) in searchSuggestList.songs" :key="index" @click="clickSuggestSong(item.id)">
+                {{ item.name + '-' + item.artists[0].name }}
+              </div>
+            </div>
+            <div class="searchSuggestItem" v-if="searchSuggestList.artists && searchSuggestList.artists.length !== 0">
+              <div class="searchSuggestItemTitle">
+                <i class="iconfont icon-mic"></i>
+                歌手
+              </div>
+              <div class="suggestItemDetail" v-for="(item, index) in searchSuggestList.songs" :key="index" @click="clickSuggestOption(item.id, 'singerDetail')">
+                {{ item.name + '-' + item.artists[0].name }}
+              </div>
+            </div>
+            <div class="searchSuggestItem" v-if="searchSuggestList.albums && searchSuggestList.albums.length !== 0">
+              <div class="searchSuggestItemTitle">
+                <i class="iconfont icon-more"></i>
+                专辑
+              </div>
+              <div class="suggestItemDetail" v-for="(item, index) in searchSuggestList.albums" :key="index" @click="clickSuggestOption(item.id, 'album')">
+                {{ item.name + '-' + item.artists[0].name }}
+              </div>
+            </div>
+            <div class="searchSuggestItem" v-if="searchSuggestList.playlists && searchSuggestList.playlists.length !== 0">
+              <div class="searchSuggestItemTitle">
+                <i class="iconfont icon-genda"></i>
+                歌单
+              </div>
+              <div class="suggestItemDetail" v-for="(item, index) in searchSuggestList.playlists" :key="index" @click="clickSuggestOption(item.id, 'musicListDetail')">
+                {{ item.name }}
+              </div>
+            </div>
+          </div>
         </el-popover>
-<!--        可以制作搜索历史-->
-<!--      热搜-->
-<!--        <div class="hotSearch" v-if="!searchSuggestList.songs">-->
-<!--          <div class="hotSearchTitle">热搜榜</div>-->
-<!--        </div>-->
+      </div>
+    </div>
+    <div class="right">
+      <div class="user">
+        <div class="avatar">
+<!--          登陆框-->
+          <el-popover placement="bottom" width="330" trigger="click" v-if="!userInfo.avatarUrl">
+            <LoginItem @getUserInfo="getUserInfo"></LoginItem>
+            <img src="~assets/img/test.jpg" alt="" slot="reference" @click="isPopoverShow = !isPopoverShow"/>
+          </el-popover>
+          <img :src="userInfo.avatarUrl" alt="" slot="reference" v-else @click="goToPerson"/>
+        </div>
+        <div class="userName" v-if="userInfo.nickname">
+          {{ userInfo.nickname }}
+        </div>
+        <div class="userName" v-else>点击头像登录</div>
       </div>
     </div>
   </div>
@@ -25,12 +95,14 @@
 <script>
 import {handleMusicTime} from "@/plugins/utils";
 import {getCurrentUserInfo, getHotSearch, getMusicInfos, getSuggestList} from "@/api/request";
+import LoginItem from "@/components/login/loginItem";
 
 // 节流计时器声明
 let timer;
 
 export default {
   name: "headerBar",
+  components: {LoginItem},
   data() {
     return {
       userInfo: {},
@@ -43,6 +115,10 @@ export default {
     }
   },
   methods: {
+    getUserInfo(info) {
+      this.userInfo = info
+      this.isPopoverShow = false;
+    },
     getHotSearch() {
       return getHotSearch().then(res=>{
         this.hotSearchList = res.data.data;
@@ -146,7 +222,7 @@ export default {
     },
   },
   created() {
-    Promise.all([this.getMusicInfo(), this.getCurrentUserInfo()]).then(() => {
+    Promise.all([this.getHotSearch(), this.getCurrentUserInfo()]).then(() => {
       if (document.cookie.search("MUSIC_U") !== -1) {
         this.$store.commit("updateLoginState", true);
       }
