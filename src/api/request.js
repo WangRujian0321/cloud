@@ -61,6 +61,27 @@ export function getCurrentUserInfo(timestamp) {
     return request('/user/account', {timestamp})
 }
 
+export function getFollows(params) {
+    return request('/user/follows', params)
+}
+
+export function getFolloweds(params) {
+    return request('/user/followeds', params)
+}
+
+
+export function getUserInfo(uid) {
+    return request(`/user/detail?uid=${uid}`)
+}
+
+export function getPlayList(params) {
+    return request(`/user/playlist`, params)
+}
+
+export function logOut() {
+    return request(`/logout`)
+}
+
 // export function request(url, params) {
 //     const instance = axios.create({
 //         baseURL: 'http://www.baidu.com',

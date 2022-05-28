@@ -12,6 +12,10 @@ const MusicListHighQuality = () => import('views/discover/discoverChildren/music
 const Ranking = () => import('views/discover/discoverChildren/ranking.vue')
 const Singer = () => import('views/discover/discoverChildren/singer.vue')
 const Video = () => import('views/video/video.vue')
+const Personal = () => import('views/personal/personal.vue')
+const Follows = () => import('views/personal/personalChildren/follows.vue')
+const Followeds = () => import('views/personal/personalChildren/followeds.vue')
+
 
 Vue.use(VueRouter)
 
@@ -41,7 +45,10 @@ const routes = [
                 ]
             },
             {path: '/video', component: Video},
-            {path: '/musiclistdetail/:id', name:'musicListDetail', component: MusicListDetail}
+            {path: '/musiclistdetail/:id', name:'musicListDetail', component: MusicListDetail},
+            {path: '/personal/:uid', name: 'personal', component: Personal},
+            {path: '/personal/follows/:uid', name: 'follows', component: Follows},
+            {path: '/personal/followeds/:uid', name: 'followeds', component: Followeds}
         ]
     }
 ]
