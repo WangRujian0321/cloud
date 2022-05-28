@@ -45,7 +45,11 @@ export default {
       this.currentPage += 1;
       this.getFolloweds();
     },
-  }
+  },
+  created() {
+    this.getFolloweds();
+    this.getUserInfo();
+  },
 }
 </script>
 

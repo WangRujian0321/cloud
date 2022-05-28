@@ -45,14 +45,22 @@ export default {
       this.currentPage += 1
       this.getFolloweds()
     },
-    created() {
-      this.getFolloweds();
-      this.getUserInfo();
-    }
+  },
+  created() {
+    this.getFolloweds();
+    this.getUserInfo();
   }
 }
 </script>
 
 <style scoped>
+.followeds {
+  overflow-y: scroll;
+}
 
+.title {
+  color: #373737;
+  font-weight: bold;
+  margin: 20px 30px;
+}
 </style>
