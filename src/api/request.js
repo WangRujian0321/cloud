@@ -102,6 +102,21 @@ export function getRecommendMusicList(params) {
     return request(`/personalized`, params)
 }
 
+export function getTopHighQuality(params) {
+    return request(`/top/playlist/highquality`, params);
+}
+
+export function getTopPlayList(params) {
+    return request(`/top/playlist`, params)
+}
+
+export function getHotTag(){
+    return request(`/playlist/hot`);
+}
+
+export function getCatList() {
+    return request(`/playlist/catlist`);
+}
 
 // export function request(url, params) {
 //     const instance = axios.create({

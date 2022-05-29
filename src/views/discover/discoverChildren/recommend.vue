@@ -1,7 +1,7 @@
 <template>
   <div class="recommend">
     <div class='carousel'>
-      <el-carousel :interval="4000" type="card" height="180px">
+      <el-carousel :interval="4000" type="card" style="height: 100%; border-radius: 10px">
         <el-carousel-item   v-for="(item, index) in bannerData" :key="index">
           <img :src="item.imageUrl" alt=""/>
         </el-carousel-item>
