@@ -82,6 +82,27 @@ export function logOut() {
     return request(`/logout`)
 }
 
+export function loadMusic(id) {
+    return request(`/song/url`, {id})
+}
+
+export function likeMusic(id, like) {
+    return request(`/like`, {id, like})
+}
+
+export function getLikeList(params) {
+    return request(`/likelist`, params)
+}
+
+export function getBanner(params) {
+    return request(`/banner`);
+}
+
+export function getRecommendMusicList(params) {
+    return request(`/personalized`, params)
+}
+
+
 // export function request(url, params) {
 //     const instance = axios.create({
 //         baseURL: 'http://www.baidu.com',
