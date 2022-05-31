@@ -1,14 +1,20 @@
 <template>
   <div class="SortBoxContainer">
-    <el-popover placement="bottom-start" width="350" popper-class="sortPop" trigger="click" :visible-arrow="false" v-model="isSortPopShow" @show="showSortPop">
+    <el-popover placement="bottom-start" width="350" popper-class="sortPop" trigger="click"
+        :visible-arrow="false" v-model="isSortPopShow" @show="showSortPop">
       <div class="SortBox" slot="reference">
         {{ currentTag.name }} <i class="iconfont icon-arrow-right-bold"></i>
-        <div class="tips" v-if="sortList.length === 0" >正在加载分类数据...</div>
-        <div class="sortList" v-else>
-          <div class="sortItem" :class="currentTag.name === item.name ? 'currentItem': ''"
-               v-for="(item, index) in sortList" :key="index" @click="clickItem(item)">
-            {{item.name}}
-          </div>
+      </div>
+      <div class="tips" v-if="sortList.length === 0">正在加载分类数据...</div>
+      <div class="sortList" v-else>
+        <div
+            class="sortItme"
+            :class="currentTag.name === item.name ? 'currentItem' : ''"
+            v-for="(item, index) in sortList"
+            :key="index"
+            @click="clickItem(item)"
+        >
+          {{ item.name }}
         </div>
       </div>
     </el-popover>
@@ -17,7 +23,7 @@
 
 <script>
 export default {
-  name: "sortBox",
+  name: "SortBox",
   props: {
     currentTag: {
       type: Object,
@@ -39,18 +45,21 @@ export default {
     };
   },
   methods: {
+    // pop框展示时的回调
     showSortPop() {
-      if(this.sortList.length === 0) {
+      // 判断是否有sortList数据
+      if (this.sortList.length === 0) {
         this.$emit("getSortList");
       }
     },
-    // 点击分类回调
+
+    // 点击分类item的回调
     clickItem(item) {
       this.$emit("clickSortBoxItem", item);
       this.isSortPopShow = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -79,7 +88,7 @@ export default {
   flex-wrap: wrap;
 }
 
-.sortItem {
+.sortItme {
   font-size: 12px;
   width: 25%;
   text-align: center;

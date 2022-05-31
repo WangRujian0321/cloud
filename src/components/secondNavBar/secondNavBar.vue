@@ -23,7 +23,21 @@ export default {
   props: {
     SecondNavBarData: {
       type: Array,
-      default: [],
+      default(){
+        return []
+      },
+    },
+    itemWidth: {
+      type: Number,
+      default() {
+        return 40;
+      },
+    },
+    currentTag: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
   },
   methods: {
@@ -33,6 +47,11 @@ export default {
       this.$emit("clickSecondBarItem", index);
     },
   },
+  watch: {
+    currentTag(current) {
+      this.activeNum = this.SecondNavBarData.findIndex((item)=>item.name === current.name)
+    }
+  }
 };
 </script>
 

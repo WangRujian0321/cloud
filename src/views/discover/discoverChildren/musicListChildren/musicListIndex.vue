@@ -1,12 +1,46 @@
 <template>
-  <div class="musicListIndex">musicListIndex</div>
+  <div class="musicListIndex">
+    <!--  精选歌单入口展示-->
+    <div class="highqualityEntry">
+      <img :src="theFirstOfHighQuality.coverImgUrl" alt="" class="backgroundImg"/>
+      <div class="cover">
+        <img :src="theFirstOfHighQuality.coverImgUrl" alt=""/>
+      </div>
+      <div class="EntryInfo">
+        <div class="tag">
+          <i class="iconfont icon-good"></i>精品歌单
+        </div>
+        <div class="name">{{ theFirstOfHighQuality.name }}</div>
+        <div class="desc">{{ theFirstOfHighQuality.copywriter }}</div>
+      </div>
+    </div>
+    <div class="musicListNavBar">
+      <div class="left">
+        <sort-box :current-tag="currentTag" :sort-list="sortList" @getSortList="getSortList" @clickSortBoxItem="clickSortBoxItem">
+        </sort-box>
+      </div>
+      <div class="right">
+        <second-nav-bar :second-nav-bar-data="hotTags" :item-width="0" :current-tag="currentTag" @clickSecondBarItem="clickSecondBarItem"></second-nav-bar>
+      </div>
+    </div>
+<!--    显示歌单列表-->
+    <list-card :list-card-data="musicList.playlists" @clickListCardItem="clickListCardItem"></list-card>
+<!--    分页-->
+    <div class="page" v-if="musicList.playlists">
+      <el-pagination background layout="prev, pager, next" :total="musicList.total" :page-size="50" small :current-page="currentPage" @current-change="pageChange"></el-pagination>
+    </div>
+  </div>
 </template>
 
 <script>
 import {getCatList, getHotTag, getTopHighQuality, getTopPlayList} from "@/api/request";
+import SortBox from "@/components/sortBox/sortBox";
+import SecondNavBar from "@/components/secondNavBar/secondNavBar";
+import ListCard from "@/components/listCard/listcard";
 
 export default {
   name: "musicListIndex",
+  components: {ListCard, SecondNavBar, SortBox},
   data () {
     return {
       theFirstOfHighQuality: {},

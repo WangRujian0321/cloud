@@ -35,6 +35,7 @@ const routes = [
                     {
                         path: '/discover/musiclist',
                         component: MusicList,
+                        redirect: '/discover/musiclist/musiclistindex',
                         children: [
                             {path: '/discover/musiclist/musiclistindex', component:MusicListIndex},
                             {path: '/discover/musiclist/musiclisthighquality', component: MusicListHighQuality}

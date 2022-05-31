@@ -94,7 +94,7 @@ export function getLikeList(params) {
     return request(`/likelist`, params)
 }
 
-export function getBanner(params) {
+export function getBanner() {
     return request(`/banner`);
 }
 
@@ -118,17 +118,18 @@ export function getCatList() {
     return request(`/playlist/catlist`);
 }
 
-// export function request(url, params) {
-//     const instance = axios.create({
-//         baseURL: 'http://www.baidu.com',
-//         timeout: 5000,
-//     })
-//     if (params) {
-//         params = {
-//             params: params
-//         }
-//         return instance.get(url, params);
-//     }else {
-//         return instance.get(url);
-//     }
-// }
+export function getComment(params) {
+    return request(`/comment`, params)
+}
+
+export function likeComment(params) {
+    return request(`/comment/like`)
+}
+
+export function getMusicListDetail(params){
+    return request(`/playlist/detail`, params)
+}
+
+export function getMusicListComment(params) {
+    return request(`/comment/playlist`)
+}
