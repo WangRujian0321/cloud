@@ -151,7 +151,7 @@
                 :comments="comments.comments"
                 :commentType="'musicList'"
                 :commentId="musicListDetail.id + ''"
-                :isHotComment="comments.hotComments ? false : true"
+                :isHotComment="!comments.hotComments"
                 @getComment="getMusicListComment"
                 @scrollToComment="scrollToComment"
                 @transToHotComment="
@@ -164,7 +164,7 @@
           <!-- 分页 -->
           <div
               class="page"
-              v-show="comments.comments && comments.comments.length != 0"
+              v-show="comments.comments && comments.comments.length !== 0"
           >
             <el-pagination
                 background
