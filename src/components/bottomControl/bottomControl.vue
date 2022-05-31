@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {getLikeList, likeMusic} from "@/api/request";
+import {getLikeList, likeMusic, loadMusic} from "@/api/request";
 import {handleMusicTime, returnSecond} from "@/plugins/utils";
 
 let lastSecond = 0;
@@ -319,7 +319,7 @@ export default {
   },
   watch: {
     // 监听vuex中musicId的变化
-    "$store.state.musicId"(id) {
+    "$store.state.musicID"(id) {
       console.log("vuex中的id发生了变化");
       // 先暂停当前播放的音乐
       this.pauseMusic();

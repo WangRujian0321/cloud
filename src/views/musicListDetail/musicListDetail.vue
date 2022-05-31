@@ -188,8 +188,8 @@
           <div
               class="tips"
               v-if="
-              followedsListData.followedsList.length == 0 &&
-              followedsListData.isLoaded == true
+              followedsListData.followedsList.length === 0 &&
+              followedsListData.isLoaded === true
             "
           >
             暂无收藏者
@@ -510,10 +510,10 @@ export default {
         // 匹配域名名称，并匹配对应的代理
         let serve = url[0].match(/http:\/(\S*).music/)[1];
         if (
-            serve != "/m7" &&
-            serve != "/m701" &&
-            serve != "/m8" &&
-            serve != "/m801"
+            serve !== "/m7" &&
+            serve !== "/m701" &&
+            serve !== "/m8" &&
+            serve !== "/m801"
         ) {
           // 没有对应的代理
           this.$message.error("匹配不到对应的代理,下载失败!");
@@ -545,11 +545,6 @@ export default {
   },
   computed: {},
   watch: {
-    // "$store.state.currentIndex"(currentIndex, lastIndex) {
-    //   // 目前没什么好思路 直接操作原生DOM
-    //   console.log(currentIndex, lastIndex);
-    //   // this.handleTableDOM(currentIndex, lastIndex);
-    // },
     "$store.state.musicId"(current, last) {
       this.handleDOM(current, last);
     },
