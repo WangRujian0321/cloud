@@ -1,6 +1,6 @@
 <template>
   <!-- 使用注意：滚动的盒子必须有个固定的高度，且设有 overflow-y:scroll; 否则会出现scrollTop=0的情况 -->
-  <div class="GoTop" :class="isGoTopShow ? 'showBtn' : isFirstLoad ? '' :'hideBtn'">
+  <div class="GoTop" :class="isGoTopShow ? 'showBtn' : isFirstLoad ? '' :'hideBtn'" @click="goTop">
     <i class="iconfont icon-fanhuidingbu"></i>
   </div>
 </template>

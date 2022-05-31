@@ -133,3 +133,10 @@ export function getMusicListDetail(params){
 export function getMusicListComment(params) {
     return request(`/comment/playlist`)
 }
+export function getAllRankings() {
+    return request(`/toplist`)
+}
+
+export function getSingerList(params){
+    return request(`/artist/list`, params);
+}
