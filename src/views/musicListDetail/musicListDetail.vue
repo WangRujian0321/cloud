@@ -1,16 +1,217 @@
 <template>
-  <div class="musicListDetail">
-    111
+  <div class="musicListDetail" v-if="musicListDetail">
+    <!-- 歌单信息 -->
+    <div class="listInfo">
+      <!-- 歌单封面 -->
+      <div class="listAvatar">
+        <img :src="musicListDetail.coverImgUrl" alt="" />
+      </div>
+      <div class="right">
+        <!-- 标题 -->
+        <div class="title">
+          <div class="titleTag">歌单</div>
+          <div class="titleContent">{{ musicListDetail.name }}</div>
+        </div>
+        <!-- 用户信息 -->
+        <div class="user">
+          <div class="userAvatar">
+            <img :src="musicListDetail.creator.avatarUrl" alt="" />
+          </div>
+          <div
+              class="userName"
+              @click="
+              $router.push({
+                name: 'personal',
+                params: { uid: musicListDetail.creator.userId },
+              })
+            "
+          >
+            {{ musicListDetail.creator.nickname }}
+          </div>
+          <div class="createTime">
+            {{ musicListDetail.createTime | showDate }}创建
+          </div>
+        </div>
+        <!-- 操作按钮 -->
+        <div class="buttons">
+          <div class="buttonItem playAll" @click="playAll">
+            <i class="iconfont icon-bofang playAll"></i>
+            <span>播放全部</span>
+          </div>
+          <div class="buttonItem" v-if="!isCreated" @click="collectList">
+            <i class="iconfont icon-xihuan" :class="isSub ? 'red' : ''"></i>
+            <span>{{ isSub ? "已收藏" : "收藏" }}</span>
+          </div>
+          <div class="buttonItem">
+            <i class="iconfont icon-zhuanfa"></i>
+            <span>分享</span>
+          </div>
+        </div>
+        <!-- 标签 -->
+        <div class="tags">
+          标签：
+          <div
+              class="tagItem"
+              v-for="(item, index) in musicListDetail.tags"
+              :key="index"
+          >
+            {{ item }}
+          </div>
+          <div v-if="musicListDetail.tags.length == 0">暂无标签</div>
+        </div>
+        <!-- 歌曲列表的歌曲数量和播放量 -->
+        <div class="otherInfo">
+          <div class="musicNum">
+            歌曲 : {{ musicListDetail.trackCount | handleNum }}
+          </div>
+          <div class="playCount">
+            播放 : {{ musicListDetail.playCount | handleNum }}
+          </div>
+        </div>
+        <div class="desc">
+          简介 :
+          {{
+            musicListDetail.description
+                ? musicListDetail.description
+                : "暂无简介"
+          }}
+        </div>
+      </div>
+    </div>
+    <!-- 歌曲列表 -->
+    <div class="musicList">
+      <el-tabs value="first" @tab-click="clickTab">
+        <el-tab-pane label="歌曲列表" name="first">
+          <!-- 表格 -->
+          <el-table
+              :data="musicListDetail.tracks"
+              size="mini"
+              style="width: 100%"
+              @row-dblclick="clickRow"
+              @cell-click="clickCell"
+              highlight-current-row
+              stripe
+              lazy
+              :row-key="
+              (row) => {
+                return row.id;
+              }
+            "
+              v-infinite-scroll="this.$store.state.isLogin ? loadMore : ''"
+              :infinite-scroll-disabled="scrollLoadDisabled"
+              :infinite-scroll-distance="1500"
+              :infinite-scroll-immediate="false"
+          >
+            <el-table-column
+                label=""
+                width="40"
+                type="index"
+                :index="handleIndex"
+            >
+            </el-table-column>
+            <el-table-column label="" width="23">
+              <!-- 下载按钮 -->
+              <i class="iconfont icon-download"></i>
+            </el-table-column>
+            <el-table-column prop="name" label="音乐标题" min-width="350">
+            </el-table-column>
+            <el-table-column prop="ar[0].name" label="歌手" min-width="120">
+            </el-table-column>
+            <el-table-column prop="al.name" label="专辑" min-width="170">
+            </el-table-column>
+            <el-table-column prop="dt" label="时长" min-width="100">
+            </el-table-column>
+            <!-- <el-table-column prop="id"></el-table-column> -->
+          </el-table>
+          <div class="loadMore" v-if="isMore && !this.$store.state.isLogin">
+            登陆后查看更多音乐
+          </div>
+          <div class="placeholder" v-else></div>
+          <!-- <div class="placeholder"></div> -->
+        </el-tab-pane>
+        <el-tab-pane label="评论" name="second">
+          <div
+              class="commentList"
+              v-if="comments.comments"
+              v-loading="isCommentLoading"
+          >
+            <!-- 精彩评论 -->
+            <comment
+                :commentType="'musicList'"
+                :comments="comments.hotComments"
+                :commentId="musicListDetail.id + ''"
+                @getComment="getMusicListComment"
+                @scrollToComment="scrollToComment"
+                v-if="comments.hotComments"
+                ref="hotComments"
+            ><div slot="title">精彩评论</div></comment
+            >
+            <!-- 最新评论 -->
+            <comment
+                :comments="comments.comments"
+                :commentType="'musicList'"
+                :commentId="musicListDetail.id + ''"
+                :isHotComment="comments.hotComments ? false : true"
+                @getComment="getMusicListComment"
+                @scrollToComment="scrollToComment"
+                @transToHotComment="
+                (info) =>
+                  $refs.hotComments.floorComment(info.commentId, info.nickName)
+              "
+            ><div slot="title">热门评论</div></comment
+            >
+          </div>
+          <!-- 分页 -->
+          <div
+              class="page"
+              v-show="comments.comments && comments.comments.length != 0"
+          >
+            <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="comments.total"
+                small
+                :page-size="50"
+                :current-page="currentCommentPage"
+                @current-change="commentPageChange"
+            >
+            </el-pagination>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="收藏者" name="third">
+          <user-list-card
+              user-type="musicListDetailPage"
+              :user-list="followedsListData.followedsList"
+              :is-load="followedsListData.isMore"
+              @bottomLoad="bottomLoad"
+          ></user-list-card>
+          <div
+              class="tips"
+              v-if="
+              followedsListData.followedsList.length == 0 &&
+              followedsListData.isLoaded == true
+            "
+          >
+            暂无收藏者
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+
+    <!-- 返回顶部组件 -->
+    <go-top scrollObj=".musicListDetail"></go-top>
   </div>
 </template>
 
 <script>
 import {getMusicListComment, getMusicListDetail} from "@/api/request";
-import {handleMusicTime, handleNum} from "@/plugins/utils";
-import {formatDate} from "element-ui";
+import {formatDate, handleMusicTime, handleNum} from "@/plugins/utils";
+import GoTop from "@/components/goTop/goTop";
+import UserListCard from "@/components/userListCard/userListCard";
 
 export default {
   name: "musicListDetail",
+  components: {UserListCard, GoTop},
   data() {
     return {
       musicListDetail: null,
@@ -189,10 +390,10 @@ export default {
         // 遍历当前musicList 找到当前播放的index的行进行渲染
         // console.log(tableRows);
         let index = this.musicListDetail.tracks.findIndex(
-            (item) => item.id == current
+            (item) => item.id === current
         );
         // console.log(index);
-        if (index != -1) {
+        if (index !== -1) {
           // 直接修改dom样式的颜色无效  可能是因为第三方组件的原故
           // 通过引入全局样式解决
           // 将正在播放的音乐前面的索引换成小喇叭
@@ -207,11 +408,11 @@ export default {
               .classList.add("currentRow");
         }
         // 清除上一首的样式
-        if (last != -1) {
+        if (last !== -1) {
           let lastIndex = this.musicListDetail.tracks.findIndex(
-              (item) => item.id == last
+              (item) => item.id === last
           );
-          if (lastIndex != -1) {
+          if (lastIndex !== -1) {
             // 将上一个播放的dom的小喇叭换回索引
             tableRows[lastIndex].children[0].querySelector(
                 ".cell"
@@ -230,9 +431,9 @@ export default {
     // 点击el-tab-pane的回调
     clickTab(e) {
       console.log(e.index);
-      if (e.index == 1 && !this.comments.comments) {
+      if (e.index === 1 && !this.comments.comments) {
         this.getMusicListComment();
-      } else if (e.index == 2 && !this.followedsListData.isLoaded) {
+      } else if (e.index === 2 && !this.followedsListData.isLoaded) {
         this.getMusicListFolloweds();
         this.followedsListData.isLoaded = true;
       }
@@ -264,13 +465,13 @@ export default {
     // 判断用户是否收藏了该歌单
     getIsSub() {
       this.isSub = this.$store.state.collectMusicList.find(
-          (item) => item.id == this.$route.params.id
+          (item) => item.id === this.$route.params.id
       );
     },
     // 判断是否是用户创建的歌单
     getIsCreated() {
       this.isCreated = this.$store.state.createdMusicList.find(
-          (item) => item.id == this.$route.params.id
+          (item) => item.id === this.$route.params.id
       );
     },
     // 点击收藏按钮的回调

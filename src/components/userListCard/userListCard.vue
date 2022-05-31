@@ -1,18 +1,30 @@
 <template>
-  <div class="UserListCard" v-infinite-scroll="loadData" :infinite-scroll-disable="disabled" :infinite-scroll-distance="300"
-       :infinite-scroll-immediate="false">
-    <div class="userItemContainer" v-for="(item, index) in userList" :key="index" @click="clickUser(item.userId)">
+  <div
+      class="UserListCard"
+      v-infinite-scroll="load"
+      :infinite-scroll-disabled="disabled"
+      :infinite-scroll-distance="300"
+      :infinite-scroll-immediate="false"
+  >
+    <div
+        class="userItemContainer"
+        v-for="(item, index) in userList"
+        :key="index"
+        @click="clickUser(item.userId)"
+    >
       <div class="userItem">
         <div class="left">
-          <img :src="item.avatarUrl + '?param=200y200'" alt="" class="avatar"/>
+          <img :src="item.avatarUrl + '?param=200y200'" alt="" class="avatar" />
         </div>
         <div class="right">
           <div class="nickName">{{ item.nickname }}</div>
-          <div class="signature">{{ item.signature }}</div>
+          <div class="signature">
+            {{ item.signature }}
+          </div>
           <div class="nums" v-if="userType === 'personalPage'">
-            <div class="musicListNum">{{ "歌单" + item.playlistCount }}</div>
+            <div class="musicListNum">{{ "歌单: " + item.playlistCount }}</div>
             <div class="fenge">|</div>
-            <div class="followedsNum">{{ "粉丝：" + item.followeds }}</div>
+            <div class="followedsNum">{{ "粉丝: " + item.followeds }}</div>
           </div>
         </div>
       </div>
@@ -22,52 +34,58 @@
 
 <script>
 export default {
-  name: "userListCard",
+  name: "UserListCard",
   props: {
-    userList:{
+    userList: {
       type: Array,
       default() {
         return [];
-      }
+      },
     },
+    // 是否使用上拉触底事件
     isLoad: {
       type: Boolean,
       default() {
         return false;
-      }
+      },
     },
     userType: {
       type: String,
       default() {
-        return "personalPage"
-      }
-    }
+        return "personalPage";
+      },
+    },
   },
   data() {
     return {
       disabled: true,
-    }
+    };
   },
   methods: {
+    // 事件
+    // 点击useritem的事件
     clickUser(id) {
-      this.$router.push({name:"personal", params:{uid: id}})
+      // console.log(id);
+      this.$router.push({ name: "personal", params: { uid: id } });
     },
-    loadData() {
-      console.log('滑动到底部')
-      this.$emit("bottomLoad")
+
+    // 上拉触底触发
+    load() {
+      //   console.log("滑动到底部");
+      this.$emit("bottomLoad");
+      // 触发load后加载数据 期间不允许再次触发load事件
       this.disabled = true;
-    }
+    },
   },
   watch: {
-    userList: {
-      handler: ()=> {
-        if(this.isLoad) {
-          this.disabled = !this.userList.length;
-        }
+    //   数据更新后，可再次运行触发load事件
+    userList() {
+      if (this.isLoad === true) {
+        this.disabled = this.userList.length === 0;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
