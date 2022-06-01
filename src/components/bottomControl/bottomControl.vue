@@ -62,6 +62,14 @@
         <el-link type="info" href="https://www.axia.run/" target="_blank" class="recondInfo">博客地址</el-link>
       </el-tooltip>
     </div>
+    <el-drawer :visible.sync="drawer" :with-heade="false" width="300">
+      <div class="drawerHeader">总{{ musicList.length }}首</div>
+      <el-table :data="musicList" stripe style="width: 100%" :show-header="false" @row-dbclick="clickRow" highlight-current-row lazy>
+        <el-table-column prop="name" width="150px"></el-table-column>
+        <el-table-column prop="ar[0].name" width="80px"></el-table-column>
+        <el-table-column prop="dt" width="70px"></el-table-column>
+      </el-table>
+    </el-drawer>
   </div>
 </template>
 
