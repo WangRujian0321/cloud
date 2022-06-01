@@ -140,3 +140,19 @@ export function getAllRankings() {
 export function getSingerList(params){
     return request(`/artist/list`, params);
 }
+
+export function getAlbumDetail(params) {
+    return request(`/album`, params)
+}
+
+export function getAlbumComment(params) {
+    return request(`/comment/album`, params)
+}
+
+export function getAlbumSublist(params) {
+    return request(`/album`, params);
+}
+
+export function getAlbumSub(params){
+    return request(`/album.sub`, params);
+}
