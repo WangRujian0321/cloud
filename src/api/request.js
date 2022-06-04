@@ -156,3 +156,15 @@ export function getAlbumSublist(params) {
 export function getAlbumSub(params){
     return request(`/album.sub`, params);
 }
+
+export function getLyric(id) {
+    return request(`/lyric`, {id})
+}
+
+export function getHotComment(params) {
+    return request(`/comment/hot`, params)
+}
+
+export function getMusicComment(params) {
+    return request(`/comment/music`, params)
+}

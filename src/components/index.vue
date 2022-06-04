@@ -41,14 +41,17 @@
       </el-main>
     </el-container>
     <bottom-control></bottom-control>
+    <music-detail-card class="musicDetailCard"></music-detail-card>
   </el-container>
 </template>
 
 <script>
 import BottomControl from "./bottomControl/bottomControl";
 import HeaderBar from "@/components/headerBar/headerBar";
+import MusicDetailCard from "@/views/musicDetailCard/musicDetailCard";
 export default {
   components: {
+    MusicDetailCard,
     HeaderBar,
     BottomControl,
   },

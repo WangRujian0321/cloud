@@ -1,6 +1,6 @@
 <template>
   <div class="hotComments">
-    <div class="comments" v-if="commentType !== '' && commentType !== 'music' && isHotComment">
+    <div class="comments" v-if="commentType != '' && commentType != 'music' && isHotComment">
       <el-input type="textarea" class="commentArea" maxlength="140" show-word-limit
                 v-model="commentInput" placeholder="留下你的评论" @input="inputComment"></el-input>
       <div class="submitCommentButton">
@@ -101,7 +101,8 @@
 
 <script>
 import {getComment, likeComment} from "@/api/request";
-import {formatDate} from "element-ui";
+import {formatDate} from "@/plugins/utils";
+
 
 export default {
   name: "comment",
@@ -374,7 +375,7 @@ export default {
   watch: {
     // 评论数据发生变化时 重置所有发表评论的数据
     comments(current) {
-      this.commentInpt = "";
+      this.commentInput = "";
       this.isCommentDialogShow = false;
       this.commentMode = true;
       this.floorCommentInputLength = 0;

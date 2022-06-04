@@ -246,7 +246,7 @@ export default {
   width: 100%;
   height: 50px;
   position: relative;
-  z-index: 30000;
+  z-index: 300;
 }
 
 .left {

@@ -320,7 +320,7 @@ export default {
           name: "singerDetail",
           params: { id: this.musicDetail.ar[0].id },
         });
-      if (this.$store.state.isMusicDetailCardShow == true) {
+      if (this.$store.state.isMusicDetailCardShow === true) {
         this.$store.state.commit("changeMusicDetailCardState", false);
       }
     },
